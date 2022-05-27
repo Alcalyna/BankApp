@@ -32,8 +32,7 @@ namespace MoneyInTheBank.ViewModel
 
         private void DeleteTransaction()
         {
-            Context.Transactions.Remove(Transaction);
-            Context.SaveChanges();
+            Transaction.Delete();
             ClearErrors();
             NotifyColleagues(App.Messages.TRANSACTION_CANCELED);
         }

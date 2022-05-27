@@ -70,7 +70,18 @@ namespace MoneyInTheBank.Model
             var query = from cia in Context.ClientInternalAccounts
                         where cia.InternalAccount == this && cia.Relation == RelationType.OWNER
                         select cia;
-            return query.Count();
+            int numberOfOwners = query.Count();
+            return numberOfOwners;
+        }
+
+        public bool IsSolvent(double amount)
+        {
+            return this.Balance - amount < this.LowerLimit;
+        }
+
+        public double GetMaxAmount()
+        {
+            return this.Balance - this.LowerLimit;
         }
     }
 }

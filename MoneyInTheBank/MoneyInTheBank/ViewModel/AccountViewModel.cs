@@ -104,8 +104,13 @@ namespace MoneyInTheBank.ViewModel
             foreach(var account in InternalAccounts)
             {
                 account.Relation = account.GetRelationType(CurrentClient);
-                account.Type = Context.InternalAccounts.SingleOrDefault(a => a == account).GetType().Name;
+                account.Type = GetTypeName(account);
             }
+        }
+
+        private string GetTypeName(InternalAccount internalAccount)
+        {
+            return Context.InternalAccounts.SingleOrDefault(a => a == internalAccount).GetType().Name;
         }
 
         protected override void OnRefreshData()

@@ -21,27 +21,8 @@ namespace MoneyInTheBank.View
             Double value;
             if (!Double.TryParse(amountInput.Text, out value))
                 amountInput.Text = String.Empty;
-            //else
-            //    amountInput.Text = String.Format(System.Globalization.CultureInfo.CurrentCulture, "{0:C2}", value);
-        }
-        public void btnCancel_Click(object sender, RoutedEventArgs e)
-        {
-            //Close();
-        }
-
-        public void txtIban_GotFocus(object sender, RoutedEventArgs e)
-        {
-            recipientAccountIban.SelectAll();
-        }
-
-        public void txtAmount_GotFocus(object sender, RoutedEventArgs e)
-        {
-            amountInput.SelectAll();
-        }
-
-        public void txtDescription_GotFocus(object sender, RoutedEventArgs e)
-        {
-            descriptionInput.SelectAll();
+            else
+                amountInput.Text = String.Format(System.Globalization.CultureInfo.CurrentCulture, "{0:C2}", value);
         }
     }
 }

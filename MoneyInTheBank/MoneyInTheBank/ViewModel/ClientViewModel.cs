@@ -81,23 +81,18 @@ namespace MoneyInTheBank.ViewModel
 
         private void DeleteAction()
         {
-            Context.Clients.Remove(Client);
-            Context.SaveChanges();
-
+            Client.Delete();
             List<InternalAccount> internalAccounts = InternalAccount.GetAll().ToList();
             foreach(InternalAccount account in internalAccounts)
             {
-                var query = from cia in Context.ClientInternalAccounts
-                            where cia.InternalAccount == account && cia.Relation == RelationType.OWNER
-                            select cia;
+                var query = ClientInternalAccount.GetInternalAccountsOwners(account);
                 int count = query.Count();
                 if (count == 0)
                 {
-                    Context.Accounts.Remove(account);
+                    account.Delete();
                     NotifyColleagues(App.Messages.ACCOUNT_DELETED, account);
                 }
             }
-            Context.SaveChanges();
             NotifyColleagues(App.Messages.CLIENT_UPDATED, Client);
             RaisePropertyChanged();
         }
@@ -132,12 +127,9 @@ namespace MoneyInTheBank.ViewModel
             {
                 if (IsNew)
                 {
-                    
                     Client.Agency = Agency;
-                    Context.Clients.Add(Client);
-                    Context.SaveChanges();
-                    Client client = Context.Clients.SingleOrDefault(c => c.ClientNumber == "0000");
-                    client.ClientNumber = client.UserId.ToString().PadLeft(4, '0');
+                    Client.Add();
+                    Client.SetClientNumber();
                     IsNew = false;
                 }
                 Context.SaveChanges();
@@ -187,7 +179,7 @@ namespace MoneyInTheBank.ViewModel
                 AddError(nameof(Email), "Required!");
             else if (!Regex.IsMatch(Email, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase))
                 AddError(nameof(Email), "Invalid format!");
-            else if ((IsNew || !Email.Equals(OriginalEmail)) && Context.Users.SingleOrDefault(u => u.Email == Email) != null)
+            else if ((IsNew || !Email.Equals(OriginalEmail)) && User.GetByEmail(Email) != null)
                 AddError(nameof(Email), "This email is already taken!");
             return !HasErrors;
         }

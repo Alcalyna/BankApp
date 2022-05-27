@@ -204,11 +204,18 @@ namespace MoneyInTheBank.ViewModel
             else
             {
                 double amount;
-                Double.TryParse(Amount, out amount);
-                if (amount < 0)
-                    AddError(nameof(Amount), "the amount should be at least 0.01 €");
-                else if (ActionDateTime == null && CurrentInternalAccount.Balance - amount < CurrentInternalAccount.LowerLimit)
-                    AddError(nameof(Amount), "You don't have enough in your account!");
+                string AmountToCheck;
+                if (Amount.Substring(Amount.Length - 1) == "€")
+                    AmountToCheck = Amount.Remove(Amount.Length - 1);
+                else
+                    AmountToCheck = Amount;
+                Double.TryParse(AmountToCheck, out amount);
+                if(!Double.TryParse(AmountToCheck, out amount))
+                    AddError(nameof(Amount), "Invalid format");
+                else if (amount <= 0)
+                    AddError(nameof(Amount), "The amount should be at least 0.01 €");
+                else if (ActionDateTime == null && CurrentInternalAccount.IsSolvent(amount))
+                    AddError(nameof(Amount), "Max amount is " + CurrentInternalAccount.GetMaxAmount() + " €!");
                 else
                     AmountDecimal = amount;
             }

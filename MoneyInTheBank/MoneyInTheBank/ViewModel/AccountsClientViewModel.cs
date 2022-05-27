@@ -63,13 +63,8 @@ namespace MoneyInTheBank.ViewModel
         }
         private bool CanDeleteAction()
         {
-            //ClientInternalAccount clientInternalAccount = GetByClientAndInternalAccount
-
-            var query = from cia in Context.ClientInternalAccounts
-                        where cia.InternalAccount == SelectedAccountToUpdate && cia.Relation == RelationType.OWNER
-                        select cia;
+            var query = ClientInternalAccount.GetInternalAccountsOwners(SelectedAccountToUpdate);
             int numberOfOwners = query.Count();
-
             return (SelectedAccountToUpdate != null && InternalAccounts.Contains(SelectedAccountToUpdate) && (SelectedAccountToUpdate.Relation == RelationType.PROXY || numberOfOwners > 1));
         }
         private void DeleteAction()
@@ -175,18 +170,11 @@ namespace MoneyInTheBank.ViewModel
 
         private void SetOtherInternalAccounts()
         {
-            var query1 = from cia in Context.ClientInternalAccounts
-                        where cia.Client.UserId != Client.UserId
-                        select cia.InternalAccount;
-
-            var query2 = from cia in Context.ClientInternalAccounts
-                        where cia.Client.UserId == Client.UserId
-                        select cia.InternalAccount;
-            List<InternalAccount> list1 = new List<InternalAccount>(query1);
-            List<InternalAccount> list2 = new List<InternalAccount>(query2);
-            List<InternalAccount> diff = list1.Except(list2).OrderBy(ia => ia.Iban).ToList();
-
-            OtherInternalAccounts = new ObservableCollection<InternalAccount>(diff);
+            if(Client != null)
+            {
+                List<InternalAccount> all = Client.GetOtherInternalAccounts();
+                OtherInternalAccounts = new ObservableCollection<InternalAccount>(all);
+            }
         }
 
         public ICommand AddRelationCommand { get; set; }

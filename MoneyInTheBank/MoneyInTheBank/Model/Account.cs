@@ -24,5 +24,11 @@ namespace MoneyInTheBank.Model
         {
             return Context.Accounts.SingleOrDefault(a => a.Iban.ToUpper().Replace(" ", "") == iban.ToUpper().Replace(" ", ""));
         }
+
+        public void Delete()
+        {
+            Context.Accounts.Remove(this);
+            Context.SaveChanges();
+        }
     }
 }

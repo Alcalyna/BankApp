@@ -45,7 +45,7 @@ namespace MoneyInTheBank.ViewModel
         {
             if (Validate())
             {
-                var user = Context.Users.SingleOrDefault(u => u.Email == Email);
+                var user = User.GetByEmail(Email);
                 NotifyColleagues(App.Messages.MSG_LOGIN, user);
             }
         }
@@ -54,7 +54,7 @@ namespace MoneyInTheBank.ViewModel
         {
             ClearErrors();
 
-            var user = Context.Users.SingleOrDefault(u => u.Email == Email);
+            var user = User.GetByEmail(Email);
 
             if (string.IsNullOrEmpty(Email))
                 AddError(nameof(Email), "required");

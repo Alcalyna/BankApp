@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using PRBD_Framework;
 using MoneyInTheBank.Model;
-using MoneyInTheBank.View;
-using Microsoft.EntityFrameworkCore;
 using MoneyInTheBank.ViewModel;
 using System.Windows.Markup;
 using System.Globalization;
+using MoneyInTheBank.Properties;
 
 namespace MoneyInTheBank
 {
@@ -48,18 +43,29 @@ namespace MoneyInTheBank
             REMOVE_ACCOUNT_FROM_USER,
             ACCOUNT_DELETED
         }
-        RecipientsView recipients { get; set; }
-        RecipientsViewModel recipientsViewModel;
-        protected override void OnStartup(StartupEventArgs e)
+        private void SetCulture()
         {
-
+            var culture = CultureInfo.GetCultures(CultureTypes.AllCultures)
+                .SingleOrDefault(c => c.IetfLanguageTag.Equals(Settings.Default.Locale, StringComparison.OrdinalIgnoreCase));
             FrameworkElement.LanguageProperty.OverrideMetadata(
                 typeof(FrameworkElement),
                 new FrameworkPropertyMetadata(
                     XmlLanguage.GetLanguage(
-                    CultureInfo.CurrentCulture.IetfLanguageTag)));
+                        culture == null || culture.Name == "" ?
+                            CultureInfo.CurrentCulture.IetfLanguageTag :
+                            Settings.Default.Locale)));
+            if (culture != null && culture.Name != "")
+                CultureInfo.CurrentCulture = culture;
+            else
+                CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo(CultureInfo.CurrentCulture.Name);
+        }
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
 
             base.OnStartup(e);
+
+            SetCulture();
 
             Context.Database.EnsureDeleted();
             Context.Database.EnsureCreated();
@@ -77,6 +83,7 @@ namespace MoneyInTheBank
             });
 
         }
+
 
         protected override void OnRefreshData()
         {

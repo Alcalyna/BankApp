@@ -56,5 +56,13 @@ namespace MoneyInTheBank.Model
             Context.ClientInternalAccounts.Add(this);
             Context.SaveChanges();
         }
+
+        public static IQueryable<ClientInternalAccount> GetInternalAccountsOwners(InternalAccount internalAccount)
+        {
+            var query = from cia in Context.ClientInternalAccounts
+                        where cia.InternalAccount == internalAccount && cia.Relation == RelationType.OWNER
+                        select cia;
+            return query;
+        }
     }
 }

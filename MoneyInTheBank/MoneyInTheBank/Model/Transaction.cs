@@ -177,5 +177,11 @@ namespace MoneyInTheBank.Model
             Context.Transactions.Add(this);
             Context.SaveChanges();
         }
+
+        public void Delete()
+        {
+            Context.Transactions.Remove(this);
+            Context.SaveChanges();
+        }
     }
 }

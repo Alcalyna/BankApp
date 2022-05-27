@@ -38,8 +38,8 @@
         <TextBlock Grid.Column="2" HorizontalAlignment="Left" Text="{Binding Client.ClientNumber}" TextWrapping="Wrap" VerticalAlignment="Center" Width="400"/>
 
         <TextBox x:Name="emailInput" Grid.Column="2"  HorizontalAlignment="Left" Grid.Row="1" TextWrapping="Wrap" Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Width="400" Height="25"/>
-        <TextBox x:Name="firstNameInput" Grid.Column="2"  HorizontalAlignment="Left" Grid.Row="2" TextWrapping="Wrap" Text="{Binding FirstName}" VerticalAlignment="Center" Width="400" Height="25"/>
-        <TextBox x:Name="lastNameInput" Grid.Column="2" HorizontalAlignment="Left" Grid.Row="3" TextWrapping="Wrap" Text="{Binding LastName}" VerticalAlignment="Center" Width="400" Height="25"/>
+        <TextBox x:Name="firstNameInput" Grid.Column="2"  HorizontalAlignment="Left" Grid.Row="2" TextWrapping="Wrap" Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Width="400" Height="25"/>
+        <TextBox x:Name="lastNameInput" Grid.Column="2" HorizontalAlignment="Left" Grid.Row="3" TextWrapping="Wrap" Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Width="400" Height="25"/>
         <PasswordBox x:Name="passwordInput" 
                      f:PasswordHelper.Attach="True"
                      f:PasswordHelper.Password="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
