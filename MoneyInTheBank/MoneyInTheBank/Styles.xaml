@@ -1,0 +1,32 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:f="clr-namespace:PRBD_Framework;assembly=PRBD_Framework"
+                    xmlns:vm="clr-namespace:MoneyInTheBank.ViewModel">
+
+    <Style TargetType="{x:Type Grid}" x:Key="Transaction">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=Transaction.TransactionStatus}" Value='EXECUTED'>
+                <Setter Property="Background" Value="LightBlue"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=Transaction.TransactionStatus}" Value='REFUSED'>
+                <Setter Property="Background" Value="Pink"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=Transaction.TransactionStatus}" Value='NOT_EXECUTED'>
+                <Setter Property="Background" Value="LightGray"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="{x:Type TextBlock}" x:Key="BalanceStyle">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource Self}, Converter={f:IsPositiveConverter}}">
+                <DataTrigger.Value>false</DataTrigger.Value>
+                <Setter Property="Foreground" Value="Red"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource Self}, Converter={f:IsPositiveConverter}}">
+                <DataTrigger.Value>true</DataTrigger.Value>
+                <Setter Property="Foreground" Value="ForestGreen"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>

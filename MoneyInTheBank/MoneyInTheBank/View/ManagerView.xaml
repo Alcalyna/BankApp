@@ -1,0 +1,57 @@
+﻿<f:UserControlBase x:Name="win" x:Class="MoneyInTheBank.View.ManagerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:vm="clr-namespace:MoneyInTheBank.ViewModel"
+             xmlns:vw="clr-namespace:MoneyInTheBank.View"
+             xmlns:f="clr-namespace:PRBD_Framework;assembly=PRBD_Framework"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.DataContext>
+        <vm:ManagerViewModel x:Name="vm"/>
+    </UserControl.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="21*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="174*"/>
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0" Content="Agency" HorizontalAlignment="Left" VerticalAlignment="Center" Height="26" Width="49"/>
+
+        <ComboBox Grid.Row="0" x:Name="agency" ItemsSource="{Binding Agencies}" SelectedItem="{Binding SelectedAgency}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="727" Margin="63,0,0,0" Height="22">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}"></TextBlock>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <f:MyDataGrid Grid.Row="1" x:Name="clientsAgencyData" ItemsSource="{Binding Clients}" AutoGenerateColumns="False" ScrollViewer.VerticalScrollBarVisibility="Auto" SelectedItem="{Binding SelectedClient}">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseClick">
+                    <i:InvokeCommandAction Command="{Binding ClientSelectedCommand}" CommandParameter="{Binding}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Client number" Binding="{Binding Path=ClientNumber}" SortDirection="Descending"/>
+                <DataGridTextColumn Header="First name" Binding="{Binding Path=FirstName}" />
+                <DataGridTextColumn Header="Last name" Binding="{Binding Path=LastName}" />
+            </DataGrid.Columns>
+        </f:MyDataGrid>
+        <Button Content="New Client" Grid.Row="2" Margin="323,0,338,274" Grid.RowSpan="2" Command="{Binding NewClientCommand}"/>
+
+        <f:MyTabControl x:Name="tabControl" Margin="10" Grid.Row="3" HasCloseButton="False">
+            <TabItem x:Name="ClientTab" Header="Client" Tag="Client">
+                <vw:ClientView/>
+            </TabItem>
+            <TabItem x:Name="AccountClientTab" Header="Accounts" Tag="AccountClient">
+                <vw:AccountsClientView/>
+            </TabItem>
+        </f:MyTabControl>
+
+    </Grid>
+</f:UserControlBase>

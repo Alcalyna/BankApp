@@ -1,0 +1,35 @@
+﻿<f:WindowBase x:Class="MoneyInTheBank.View.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:MoneyInTheBank.ViewModel"
+        xmlns:vw="clr-namespace:MoneyInTheBank.View"
+        xmlns:f="clr-namespace:PRBD_Framework;assembly=PRBD_Framework"
+        mc:Ignorable="d"
+        Title="{Binding Title}" Height="768" Width="1024" WindowStartupLocation="CenterScreen">
+    <Window.DataContext>
+        <vm:MainViewModel x:Name="vm"/>
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Menu>
+            <MenuItem Header="Log out" Click="MenuLogout_Click"/>
+            <DatePicker SelectedDate="{Binding SelectedDate, UpdateSourceTrigger=PropertyChanged}" Margin="700 0 0 0"></DatePicker>
+        </Menu>
+        <f:MyTabControl x:Name="tabControl" Margin="10" Grid.Row="1" HasCloseButton="True">
+            <TabItem x:Name="AccountsTab" Header="Accounts" Tag="Accounts" Visibility="{Binding IsClient, Converter={f:BoolToVisibleConverter}}">
+                    <vw:AccountView/>
+            </TabItem>
+            <TabItem x:Name="ManagerTab" Header="Manager" Tag="Manager" Visibility="{Binding IsManager, Converter={f:BoolToVisibleConverter}}">
+                <vw:ManagerView/>
+            </TabItem>
+            <TabItem x:Name="AdminTab" Header="Admin" Tag="Admin" Visibility="{Binding IsAdmin, Converter={f:BoolToVisibleConverter}}">
+                <vw:AdminView/>
+            </TabItem>
+        </f:MyTabControl>
+    </Grid>
+</f:WindowBase>

@@ -1,0 +1,138 @@
+﻿<f:UserControlBase x:Class="MoneyInTheBank.View.AccountDetailView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:vm="clr-namespace:MoneyInTheBank.ViewModel"
+             xmlns:vw="clr-namespace:MoneyInTheBank.View"
+             xmlns:f="clr-namespace:PRBD_Framework;assembly=PRBD_Framework"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance Type=vm:AccountDetailViewModel, IsDesignTimeCreatable=False}"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.DataContext>
+        <vm:AccountDetailViewModel x:Name="vm"/>
+    </UserControl.DataContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="38*"/>
+            <RowDefinition Height="187*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Background="LightGray">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="201*"/>
+                <ColumnDefinition Width="337*"/>
+                <ColumnDefinition Width="262*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30*"/>
+                    <RowDefinition Height="30*"/>
+                    <RowDefinition Height="30*"/>
+                    <RowDefinition Height="50*"/>
+                </Grid.RowDefinitions>
+                <CheckBox Grid.Column="0" Content="Future transactions" IsChecked="{Binding FutureTransactions}" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                <CheckBox Content="Past transactions" IsChecked="{Binding PastTransactions}" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" Grid.Row="1"/>
+                <CheckBox Content="Refused transactions" IsChecked="{Binding RefusedTransactions}" HorizontalAlignment="Left" Margin="27,0,0,0" VerticalAlignment="Center" Grid.Row="2"/>
+                <Grid Grid.Row="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="142*"/>
+                        <ColumnDefinition Width="59*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock HorizontalAlignment="Left" Margin="27,0,0,0" TextWrapping="Wrap" Text="Period" VerticalAlignment="Center" Grid.Column="0"/>
+                    <ComboBox x:Name="timePeriods" ItemsSource="{Binding TimePeriods}" SelectedItem="{Binding SelectedTimePeriod}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" Grid.ColumnSpan="2" Margin="71,0,0,0">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}"></TextBlock>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </Grid>
+            </Grid>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="10*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" HorizontalAlignment="Left" Margin="14,0,0,0" TextWrapping="Wrap" Text="Category" VerticalAlignment="Center"/>
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    
+                    <ListBox x:Name="listViewCategories" Grid.Row="0" ItemsSource="{Binding CategoriesBooleans}" BorderBrush="Transparent" SelectionMode="Multiple" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="{x:Null}">
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <CheckBox
+                                    Content="{Binding NameToDisplay}"
+                                            Margin="3"
+                                          IsChecked="{Binding IsChecked}">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="Checked">
+                                            <i:InvokeCommandAction Command="{Binding CheckCommand, ElementName=vm}"
+                                                   CommandParameter="{Binding}"/>
+                                        </i:EventTrigger>
+                                        <i:EventTrigger EventName="Unchecked">
+                                            <i:InvokeCommandAction Command="{Binding UncheckCommand, ElementName=vm}"
+                                                   CommandParameter="{Binding}"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </CheckBox>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" Content="Select all" Command="{Binding SelectAllCommand}" HorizontalAlignment="Right" Margin="150,0,0,0" VerticalAlignment="Center" Height="20" Width="75"/>
+                        <Button Grid.Column="1" Content="Select none" Command="{Binding SelectNoneCommand}"  HorizontalAlignment="Right" Margin="20,0,0,0" VerticalAlignment="Center" Height="20" Width="69"/>
+                    </Grid>
+                </Grid>
+            </Grid>
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" HorizontalAlignment="Left" Margin="3,0,0,0" TextWrapping="Wrap" Text="Text filter" VerticalAlignment="Top"/>
+                <TextBox Grid.Row="1" Text="{Binding Filter, UpdateSourceTrigger=PropertyChanged}" FontSize="14" />
+                <Button Grid.Row="2" Content="Clear" Command="{Binding ClearFilter}" Margin="207,1,0,2"/>
+            </Grid>
+        </Grid>
+        <ListView x:Name="lvTransactions" ItemsSource="{Binding TransactionsVMs}" Grid.Row="1" BorderBrush="Transparent" SelectionMode="Single" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.CanContentScroll="True" Background="{x:Null}" >
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <vw:TransactionCardView/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <StackPanel Grid.Row="2" Orientation="Horizontal">
+            <Button Content="&lt;&lt;" Command="{Binding FirstPageCommand}"/>
+            <Button Content="&lt;" Command="{Binding PreviousPageCommand}"/>
+            <TextBlock>
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{} {0} of {1} ({2:dd-MM-yyyy} - {3:dd-MM-yyyy})">
+                        <Binding Path="CurrentPage"/>
+                        <Binding Path="NumberOfPages"/>
+                        <Binding Path="StartDate"/>
+                        <Binding Path="EndDate"/>
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+            <Button Content=">" Command="{Binding NextPageCommand}"/>
+            <Button Content=">>" Command="{Binding LastPageCommand}"/>
+        </StackPanel>
+    </Grid>
+
+</f:UserControlBase>

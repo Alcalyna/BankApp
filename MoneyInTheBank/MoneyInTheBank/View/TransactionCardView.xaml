@@ -1,0 +1,99 @@
+﻿<f:UserControlBase x:Class="MoneyInTheBank.View.TransactionCardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:vm="clr-namespace:MoneyInTheBank.ViewModel"
+             xmlns:vw="clr-namespace:MoneyInTheBank.View"
+             xmlns:f="clr-namespace:PRBD_Framework;assembly=PRBD_Framework"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <Border BorderBrush="Gray" BorderThickness="1">
+        <Grid Width="800" Style="{StaticResource Transaction}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Label Content="Transaction" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" Height="26" Width="70"/>
+            <Label Grid.Column="0" Grid.Row="1" Content="Creation date" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" Height="24" Width="82"/>
+            <Label Grid.Row="2" Content="Action date" HorizontalAlignment="Center" VerticalAlignment="Center" Height="26" Width="72"/>
+            <Label Grid.Column="0" Grid.Row="3" Content="Created by" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" Height="26" Width="68"/>
+            <Label Grid.Column="0" Grid.Row="4" Content="From" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" Height="26" Width="37"/>
+            <Label Grid.Column="0" Grid.Row="5" Content="To" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" Height="26" Width="22"/>
+            <Label Grid.Column="0" Grid.Row="6" Content="Description" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" Height="26" Width="77"/>
+            <Label Grid.Column="0" Grid.Row="7" Content="Category" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" Height="26" Width="58"/>
+
+            <TextBlock Grid.Column="1" TextWrapping="WrapWithOverflow" Text="{Binding Path=Transaction.TransactionId}" FontSize="12" Foreground="Black" TextAlignment="Left" VerticalAlignment="Center" Padding="5" Height="26" Grid.ColumnSpan="2" Margin="0,0,196,0"/>
+            <TextBlock Grid.Column="1" Grid.Row="1" TextWrapping="WrapWithOverflow" TextTrimming="WordEllipsis"  Text="{Binding Path=Transaction.CreationDateTime}" FontWeight="Bold" FontSize="10" Foreground="Black" TextAlignment="Left" VerticalAlignment="Center" Padding="5" Height="24" Grid.ColumnSpan="2" Margin="0,0,196,0"/>
+            <TextBlock Grid.Column="1" Grid.Row="2" TextWrapping="WrapWithOverflow" TextTrimming="WordEllipsis"  Text="{Binding Path=Transaction.ActionDateTime}" FontWeight="Bold" FontSize="10" Foreground="Black" TextAlignment="Left" VerticalAlignment="Center" Padding="5" Height="24" Grid.ColumnSpan="2" Margin="0,0,196,0"/>
+            <TextBlock Grid.Column="1" Grid.Row="3" TextWrapping="WrapWithOverflow" TextTrimming="WordEllipsis"  FontWeight="Bold" FontSize="10" Foreground="Black" TextAlignment="Left" VerticalAlignment="Center" Padding="5" Height="24" Grid.ColumnSpan="2" Margin="0,0,196,0">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{}{0} {1}">
+                        <Binding Path="Transaction.Principal.FirstName"/>
+                        <Binding Path="Transaction.Principal.LastName"/>
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+            <TextBlock Grid.Column="1" Grid.Row="4" TextWrapping="WrapWithOverflow" TextTrimming="WordEllipsis" FontWeight="Bold" FontSize="10" Foreground="Black" TextAlignment="Left" VerticalAlignment="Center" Padding="5" Height="24" Grid.ColumnSpan="2" Margin="0,0,196,0">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{}{0} ({1})">
+                        <Binding Path="Transaction.Source.Description"/>
+                        <Binding Path="Transaction.Source.Iban"/>
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+            <TextBlock Grid.Column="1" Grid.Row="5" TextWrapping="WrapWithOverflow" TextTrimming="WordEllipsis" FontWeight="Bold" FontSize="10" Foreground="Black" TextAlignment="Left" VerticalAlignment="Center" Padding="5" Height="24" Grid.ColumnSpan="2" Margin="0,0,196,0">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{}{0} ({1})">
+                        <Binding Path="Transaction.Recipient.Description"/>
+                        <Binding Path="Transaction.Recipient.Iban"/>
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+
+
+            <TextBlock Grid.Column="1" Grid.Row="6" TextWrapping="WrapWithOverflow" TextTrimming="WordEllipsis"  Text="{Binding Path=Transaction.Description}" FontWeight="Bold" FontSize="10" Foreground="Black" TextAlignment="Left" VerticalAlignment="Center" Padding="5" Height="24" Grid.ColumnSpan="2" Margin="0,0,196,0"/>
+            <ComboBox x:Name="transactionCategory"  Grid.Column="1" Grid.Row="7" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="155" Grid.ColumnSpan="2" Height="22">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}"></TextBlock>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <TextBlock Grid.Column="3" Grid.Row="1" TextWrapping="WrapWithOverflow" TextTrimming="WordEllipsis" Text="{Binding Path=Transaction.AmountToDisplay, Converter={vw:CurrencyToStringWithPlusSignConverter}}" Style="{StaticResource BalanceStyle}" FontSize="10" TextAlignment="Left" VerticalAlignment="Center" Padding="5" Height="20" Margin="29,0,22,0"/>
+            <TextBlock Grid.Column="3" Grid.Row="2" TextWrapping="WrapWithOverflow" TextTrimming="WordEllipsis" Text="{Binding Path=Transaction.TemporaryBalance, Converter={vw:CurrencyToStringWithPlusSignConverter}}" Style="{StaticResource BalanceStyle}" Visibility="{Binding Path=Transaction.TransactionStatus, ConverterParameter={x:Static vm:Status.NOT_EXECUTED}, Converter={vw:EnumToNotVisibleConverter}}" FontSize="10" TextAlignment="Left" VerticalAlignment="Center" Padding="5" Height="20" Margin="29,0,22,0"/>
+            <Label Grid.Column="2" Grid.Row="1" Content="Amount" HorizontalAlignment="Left" Margin="0,6,0,0" VerticalAlignment="Top" Height="26" Width="54"/>
+            <Label Grid.Column="2" Grid.Row="2" Content="Temporary balance" Visibility="{Binding Path=Transaction.TransactionStatus, ConverterParameter={x:Static vm:Status.NOT_EXECUTED}, Converter={vw:EnumToNotVisibleConverter}}" HorizontalAlignment="Left" Margin="0,6,0,0" VerticalAlignment="Top" Height="26" Width="114"/>
+
+            <TextBlock Grid.Row="8" Grid.Column="1" TextWrapping="WrapWithOverflow" TextTrimming="WordEllipsis"  Text="{Binding Path=InternalAccount.LowerLimit, ElementName=vm, StringFormat=REFUSED Because it would have given a balance below the floor: {0:C2}}" Visibility="{Binding Path=Transaction.TransactionStatus, ConverterParameter={x:Static vm:Status.REFUSED}, Converter={f:EnumToVisibleConverter}}"  FontSize="10" TextAlignment="Left" VerticalAlignment="Top" Padding="5" Height="25" Foreground="Red" FontWeight="Bold" Grid.ColumnSpan="2"/>
+
+            <Grid Grid.Row="8" Grid.Column="1" Visibility="{Binding Path=Transaction.TransactionStatus, ConverterParameter={x:Static vm:Status.NOT_EXECUTED}, Converter={f:EnumToVisibleConverter}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Row="8" Grid.Column="1" TextWrapping="WrapWithOverflow" TextTrimming="WordEllipsis"  Text="This transaction is foreseen in the future. You may cancel it." FontSize="10" TextAlignment="Left" VerticalAlignment="Top" Padding="5" Height="25" Foreground="DarkBlue" FontWeight="Bold" Grid.ColumnSpan="2"/>
+                <Button Grid.Column="1" Content="Cancel" Command="{Binding CancelTransactionCommand}" Margin="321,1,-102,1"/>
+
+            </Grid>
+        </Grid>
+    </Border>
+
+
+</f:UserControlBase>

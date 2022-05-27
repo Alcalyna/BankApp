@@ -1,0 +1,32 @@
+﻿<f:UserControlBase x:Class="MoneyInTheBank.View.AccountCardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:vm="clr-namespace:MoneyInTheBank.ViewModel"
+             xmlns:vw="clr-namespace:MoneyInTheBank.View"
+             xmlns:f="clr-namespace:PRBD_Framework;assembly=PRBD_Framework"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <StackPanel Orientation="Vertical" Background="LightBlue">
+        <TextBlock TextWrapping="WrapWithOverflow" Text="{Binding Iban}" FontSize="17" Foreground="Black" Grid.Row="0" TextAlignment="Center" FontFamily="AR DESTINE"/>
+        <TextBlock TextWrapping="WrapWithOverflow" TextTrimming="WordEllipsis"  Text="{Binding Description}"  FontSize="10" Foreground="Black" Grid.Row="1" TextAlignment="Center" VerticalAlignment="Center" Padding="5"/>
+        <TextBlock TextWrapping="WrapWithOverflow" Text="{Binding Type, StringFormat='Type: {0}'}"  FontSize="14" Foreground="Black" Grid.Row="2" TextAlignment="Center"/>
+        <TextBlock TextWrapping="WrapWithOverflow" Text="{Binding Balance, Converter={vw:CurrencyToStringWithPlusSignConverter}}"  FontSize="14" Style="{StaticResource BalanceStyle}" Grid.Row="2" TextAlignment="Center"/>
+        <TextBlock TextWrapping="WrapWithOverflow" Text="{Binding Relation, StringFormat='Access: {0}'}"  FontSize="14" Foreground="Black" Grid.Row="2" TextAlignment="Center"/>
+        <TextBlock TextWrapping="WrapWithOverflow" Text="{Binding LowerLimit, StringFormat='Floor: {0:C2}'}"  FontSize="14" Foreground="Black" Grid.Row="2" TextAlignment="Center"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="5*"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" x:Name="statementBtn" Command="{Binding Statement, ElementName=vm}" CommandParameter="{Binding}" Content="Statement"/>
+            <Button Grid.Column="1" x:Name="transferBtn" Command="{Binding NewTransfer, ElementName=vm}" CommandParameter="{Binding}" Content="Transfer"/>
+        </Grid>
+        
+    </StackPanel>
+
+
+</f:UserControlBase>

@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32210.238
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoneyInTheBank", "MoneyInTheBank\MoneyInTheBank.csproj", "{A94A953B-2D1C-420C-BDC9-C37F5CBD2BC7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PRBD_Framework", "PRBD_Framework\PRBD_Framework.csproj", "{5E3DCB71-0AB6-448A-B727-8918246FA2F1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A94A953B-2D1C-420C-BDC9-C37F5CBD2BC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A94A953B-2D1C-420C-BDC9-C37F5CBD2BC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A94A953B-2D1C-420C-BDC9-C37F5CBD2BC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A94A953B-2D1C-420C-BDC9-C37F5CBD2BC7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E3DCB71-0AB6-448A-B727-8918246FA2F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E3DCB71-0AB6-448A-B727-8918246FA2F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E3DCB71-0AB6-448A-B727-8918246FA2F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E3DCB71-0AB6-448A-B727-8918246FA2F1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E99DD104-71BE-4147-8F94-1296ACAF4FC5}
+	EndGlobalSection
+EndGlobal
