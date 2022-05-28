@@ -1,0 +1,161 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="MoneyInTheBank.Model.Account">
+    <Position X="16.25" Y="8" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAgAAAAAgAAACAAAAUABAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Account.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="TransactionsIn" />
+      <Property Name="TransactionsOut" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="MoneyInTheBank.Model.Admin">
+    <Position X="7.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Admin.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MoneyInTheBank.Model.Agency">
+    <Position X="16.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAQACAIAAQAAAAABAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Agency.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Clients" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="MoneyInTheBank.Model.Category">
+    <Position X="21" Y="0.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAABAAAAAQAAAAAAAAAAgAAAAAAAAg=</HashCode>
+      <FileName>Model\Category.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MoneyInTheBank.Model.CheckingAccount">
+    <Position X="18.75" Y="16" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAACBAAAIAAAAAAAQAAgACAAAAAAA=</HashCode>
+      <FileName>Model\CheckingAccount.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Clients" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="MoneyInTheBank.Model.Client">
+    <Position X="10" Y="6" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAIAAEQAAAAAAEAQAAAAAAAACAEAAAIAgCAACAAAAAA=</HashCode>
+      <FileName>Model\Client.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Agency" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="ClientInternalAccounts" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="MoneyInTheBank.Model.ClientCheckingAccount">
+    <Position X="7.5" Y="14.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\ClientCheckingAccount.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MoneyInTheBank.Model.ClientInternalAccount">
+    <Position X="8.5" Y="10" Width="2.5" />
+    <NestedTypes>
+      <Enum Name="MoneyInTheBank.Model.ClientInternalAccount.RelationType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Model\ClientInternalAccount.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAQAAAAgABAAAgAAAkAAAAAAABAAACAAAQ=</HashCode>
+      <FileName>Model\ClientInternalAccount.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MoneyInTheBank.Model.ClientSavingAccount">
+    <Position X="10.25" Y="14.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\ClientSavingAccount.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MoneyInTheBank.Model.ExternalAccount">
+    <Position X="13.75" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAIAA=</HashCode>
+      <FileName>Model\ExternalAccount.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MoneyInTheBank.Model.InternalAccount">
+    <Position X="17.5" Y="11.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEBAgAAAAgQAgAAAAACAgAAAAIAwAAAAAAAAA=</HashCode>
+      <FileName>Model\InternalAccount.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="ClientInternalAccounts" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="MoneyInTheBank.Model.Manager">
+    <Position X="12.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAQA=</HashCode>
+      <FileName>Model\Manager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Agencies" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="MoneyInTheBank.Model.SavingAccount">
+    <Position X="16" Y="16" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAAACAAAAIAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\SavingAccount.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Clients" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="MoneyInTheBank.Model.Transaction">
+    <Position X="24" Y="7.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAIQQIAAAgAgkAAgKSEAAKCAAAEAQAAAAgAAgAAgCAA=</HashCode>
+      <FileName>Model\Transaction.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Source" />
+      <Property Name="Category" />
+      <Property Name="Principal" />
+      <Property Name="Recipient" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="MoneyInTheBank.Model.User">
+    <Position X="8.5" Y="1.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAACAAAAAAAAAAAAgAAACAAAACAAAAAAAAAAg=</HashCode>
+      <FileName>Model\User.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="MoneyInTheBank.Model.IBAN">
+    <Position X="20.5" Y="4.75" Width="2" />
+    <NestedTypes>
+      <Enum Name="MoneyInTheBank.Model.IBAN.ValidationResult" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Model\Iban.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAgIAAAAACAAAAEAAAAAAAAAIABBAAAIAAAAIAAAAA=</HashCode>
+      <FileName>Model\Iban.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

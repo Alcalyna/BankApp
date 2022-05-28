@@ -1,61 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
-using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using static MoneyInTheBank.Model.ClientInternalAccount;
-using System.Windows.Input;
 
 namespace MoneyInTheBank.Model
 {
-    public abstract class InternalAccount: Account, INotifyPropertyChanged
+    public abstract class InternalAccount: Account
     {
         [Required]
         public double LowerLimit { get; set; }
         public virtual ICollection<ClientInternalAccount> ClientInternalAccounts { get; set; } = new HashSet<ClientInternalAccount>();
-
-        private double _balance;
+        [NotMapped]
+        public double Balance { get; set; }
 
         [NotMapped]
-        public double Balance
-        {
-            get => _balance;
-            set
-            {
-                if (_balance != value)
-                {
-                    _balance = value;
-                    OnPropertyChanged("Balance");
-                }
-            }
-        }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        private void OnPropertyChanged(string balance)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(balance));
-        }
+        public double TemporaryBalance { get; set; }
         [NotMapped]
         public RelationType Relation { get; set; }
-
-        public RelationType GetRelationType(Client client)
-        {
-            return ClientInternalAccounts.SingleOrDefault(c => c.Client == client && c.InternalAccount == this).Relation;
-        }
         [NotMapped]
         public string Type { get; set; }
-
-        public static IQueryable<InternalAccount> GetAll()
-        {
-            return Context.InternalAccounts.OrderBy(ia => ia.Iban);
-        }
-
+        public RelationType GetRelationType(Client client) => ClientInternalAccounts.SingleOrDefault(c => c.Client == client && c.InternalAccount == this).Relation;
+        public static IQueryable<InternalAccount> GetAll() => Context.InternalAccounts.OrderBy(ia => ia.Iban);
         public static IQueryable<InternalAccount> GetFiltered(string Filter)
         {
             var filtered = from ia in Context.InternalAccounts
@@ -74,14 +41,24 @@ namespace MoneyInTheBank.Model
             return numberOfOwners;
         }
 
-        public bool IsSolvent(double amount)
+        public bool IsSolvent(double amount) => this.Balance - amount < this.LowerLimit;
+
+        public double GetMaxAmount() => this.Balance - this.LowerLimit;
+
+        public static void ResetBalanceAccounts()
         {
-            return this.Balance - amount < this.LowerLimit;
+            var query = from a in Context.InternalAccounts
+                        select a;
+            foreach (var a in query)
+                a.Balance = 0;
         }
 
-        public double GetMaxAmount()
+        public static void ResetTemporaryBalanceAccounts()
         {
-            return this.Balance - this.LowerLimit;
+            var query = from a in Context.InternalAccounts
+                        select a;
+            foreach (var a in query)
+                a.TemporaryBalance = 0;
         }
     }
 }

@@ -17,17 +17,20 @@
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         <Menu>
-            <MenuItem Header="Log out" Click="MenuLogout_Click"/>
+            <MenuItem Header="Log out" Command="{Binding LogoutCommand}"/>
             <DatePicker SelectedDate="{Binding SelectedDate, UpdateSourceTrigger=PropertyChanged}" Margin="700 0 0 0"></DatePicker>
         </Menu>
         <f:MyTabControl x:Name="tabControl" Margin="10" Grid.Row="1" HasCloseButton="True">
             <TabItem x:Name="AccountsTab" Header="Accounts" Tag="Accounts" Visibility="{Binding IsClient, Converter={f:BoolToVisibleConverter}}">
+            <!--<TabItem x:Name="AccountsTab" Header="Accounts" Tag="Accounts">-->
                     <vw:AccountView/>
             </TabItem>
             <TabItem x:Name="ManagerTab" Header="Manager" Tag="Manager" Visibility="{Binding IsManager, Converter={f:BoolToVisibleConverter}}">
+            <!--<TabItem x:Name="ManagerTab" Header="Manager" Tag="Manager">-->
                 <vw:ManagerView/>
             </TabItem>
             <TabItem x:Name="AdminTab" Header="Admin" Tag="Admin" Visibility="{Binding IsAdmin, Converter={f:BoolToVisibleConverter}}">
+            <!--<TabItem x:Name="AdminTab" Header="Admin" Tag="Admin">-->
                 <vw:AdminView/>
             </TabItem>
         </f:MyTabControl>

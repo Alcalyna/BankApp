@@ -1,0 +1,85 @@
+﻿<f:UserControlBase x:Name="win" x:Class="MoneyInTheBank.View.AdminTransactionView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:vm="clr-namespace:MoneyInTheBank.ViewModel"
+             xmlns:vw="clr-namespace:MoneyInTheBank.View"
+             xmlns:f="clr-namespace:PRBD_Framework;assembly=PRBD_Framework"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.DataContext>
+        <vm:AdminTransactionViewModel x:Name="vm"/>
+    </UserControl.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="7*"/>
+            <RowDefinition Height="7*"/>
+            <RowDefinition Height="7*"/>
+            <RowDefinition Height="7*"/>
+            <RowDefinition Height="7*"/>
+            <RowDefinition Height="7*"/>
+            <RowDefinition Height="7*"/>
+            <RowDefinition Height="56*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="32*"/>
+            <ColumnDefinition Width="89*"/>
+            <ColumnDefinition Width="76*"/>
+        </Grid.ColumnDefinitions>
+        <Label x:Name="sourceAccountLabel" Grid.Column="1" Content="From" HorizontalAlignment="Left" VerticalAlignment="Center" Height="26" Width="37"/>
+        <Label x:Name="accountdescription" Grid.Column="1" Content="Account's description" Visibility="{Binding DescriptionVisible, Converter={f:BoolToVisibleConverter}}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="1" Height="26" Width="123"/>
+        <Label x:Name="recipientAccountLabel" Grid.Column="1" Content="To" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2" Height="26" Width="22"/>
+        <Label Grid.Column="1" Content="Amount" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="3" Height="26" Width="53"/>
+        <Label Grid.Column="1" Content="Description" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="4" Height="26" Width="70"/>
+        <Label Grid.Column="1" Content="Action Date" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="5" Height="26" Width="72"/>
+        <Label Grid.Column="1" Content="Category" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="6" Height="26" Width="58"/>
+
+        <ComboBox x:Name="externalAccounts" IsEditable="True" IsTextSearchEnabled="True" ItemsSource="{Binding ExternalAccountIbans}" Text="{Binding SelectedExternalAccountIban, Mode=TwoWay}" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="400" Height="22" Grid.ColumnSpan="2">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}"></TextBlock>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+
+        <ComboBox x:Name="allInternalAccounts" Grid.Column="2" Grid.Row="2" ItemsSource="{Binding InternalAccounts}" SelectedItem="{Binding SelectedInternalAccount}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.ColumnSpan="2" Width="400" Height="22" >
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock>
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}{0} - {1}">
+                                <Binding Path="Iban"/>
+                                <Binding Path="Description"/>
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <TextBox x:Name="accountDescriptionInput" Grid.Column="2" Visibility="{Binding DescriptionVisible, Converter={f:BoolToVisibleConverter}}" HorizontalAlignment="Left" Grid.Row="1" TextWrapping="Wrap" Text="{Binding ExternalAccountDescription, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Width="400" Height="26" Grid.ColumnSpan="2"/>
+
+
+        <DatePicker x:Name="actionDate" Height="30" SelectedDate="{Binding ActionDateTime, UpdateSourceTrigger=PropertyChanged}" Grid.Column="2" HorizontalAlignment="Left" Grid.Row="5" Grid.RowSpan="2" Width="398" VerticalAlignment="Top" Grid.ColumnSpan="2" Margin="0,3,0,0"/>
+        <ComboBox x:Name="category" IsEditable="True" IsTextSearchEnabled="True" ItemsSource="{Binding CategoryNames}" Text="{Binding CategoryName, Mode=TwoWay}" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="400" Grid.Row="6" Height="22" Grid.ColumnSpan="2">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}"></TextBlock>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <TextBox x:Name="amountInput" Grid.Column="2" LostFocus="amount_format" HorizontalAlignment="Left" Grid.Row="3" TextWrapping="Wrap" Text="{Binding Amount, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Width="400" Height="25"/>
+        <TextBox x:Name="descriptionInput" Grid.Column="2" HorizontalAlignment="Left" Grid.Row="4" TextWrapping="Wrap" Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Width="400" Height="26" Grid.ColumnSpan="2"/>
+
+        
+        <Grid Grid.Column="3" Grid.Row="0">
+            <Button Grid.Column="0" Content="Generate Random Iban" Command="{Binding GenerateRandomIbanCommand}" HorizontalAlignment="Left" Margin="160,0,0,0" VerticalAlignment="Center"/>
+            <Button Content="Add External Account" Command="{Binding AddExternalAccountCommand}" HorizontalAlignment="Left" Margin="21,0,0,0" VerticalAlignment="Center"/>
+        </Grid>
+
+        <Button Grid.Column="2" Content="Transfer" Command="{Binding TransferCommand}" HorizontalAlignment="Left" Margin="41,50,0,0" Grid.Row="8" VerticalAlignment="Top" Width="118"/>
+        <Button Grid.Column="2" Content="Cancel" Command="{Binding CancelCommand}" HorizontalAlignment="Left" Margin="186,50,0,0" Grid.Row="8" VerticalAlignment="Top" Width="118"/>
+    </Grid>
+</f:UserControlBase>

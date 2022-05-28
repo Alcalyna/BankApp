@@ -1,0 +1,72 @@
+@startuml MITB_model
+
+    abstract class User {
+        firstName: String
+        lastName: String 
+        email: String 
+        password: String 
+    }
+
+    class Client {
+        clientNumber: String
+    }
+
+    class Manager {
+
+    }
+
+    class Admin {
+
+    }
+
+    abstract class Account {
+        iban: String
+        description: String
+    }
+
+    class ExternalAccount {
+
+    }
+
+    class InternalAccount {
+        lowerLimit: Decimal
+        getBalance(DateTime dateTime): Decimal
+    }
+
+    enum AccountType {
+        SAVING_ACCOUNT
+        CHECKING_ACCOUNT
+    }
+    
+    class Transaction {
+        principal: Client
+        amount: Decimal 
+        source: InternalAccount
+        recipient: Account 
+        description: String
+        creationDateTime: DateTime
+        actionDateTime: DateTime
+    }
+
+    class Agency {
+        name: String
+    }
+
+    class Category {
+        name: String
+    }
+
+    User <|-- Client
+    User <|-- Manager
+    User <|-- Admin
+    Account <.. ExternalAccount
+    Account <.. InternalAccount
+    InternalAccount "1" -- "1" AccountType: hasType >
+    Transaction "*" -r-* "1,2" InternalAccount:"    "     
+    Client "*" --* "1" Agency
+    Manager "1" --* "1" Agency: manages >
+    Client "1..*" -- "1..*" InternalAccount: owns >
+    Client "1..*" -- "1..*" InternalAccount: hasMandate >
+    Category "0,1" --o "1" Transaction: has <
+
+@end

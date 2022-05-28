@@ -1,9 +1,5 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Controls;
+﻿using MoneyInTheBank.Model;
 using PRBD_Framework;
-using MoneyInTheBank.ViewModel;
-using MoneyInTheBank.Model;
 
 namespace MoneyInTheBank.View
 {

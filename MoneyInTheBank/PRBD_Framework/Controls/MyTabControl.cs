@@ -143,6 +143,7 @@ namespace PRBD_Framework {
             // vérifie si le VM associé au UC contenu dans le TabItem n'a pas de changements en cours
             if (selectedTabChanging) return;
             var oldItem = e.RemovedItems.Count > 0 ? e.RemovedItems[0] as TabItem : null;
+            
             if (IsTabDirty(oldItem)) {
                 selectedTabChanging = true;
                 SelectedItem = oldItem;

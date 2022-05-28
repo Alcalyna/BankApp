@@ -6,13 +6,13 @@
     <Style TargetType="{x:Type Grid}" x:Key="Transaction">
         <Style.Triggers>
             <DataTrigger Binding="{Binding Path=Transaction.TransactionStatus}" Value='EXECUTED'>
-                <Setter Property="Background" Value="LightBlue"/>
+                <Setter Property="Background" Value="LightGray"/>
             </DataTrigger>
             <DataTrigger Binding="{Binding Path=Transaction.TransactionStatus}" Value='REFUSED'>
                 <Setter Property="Background" Value="Pink"/>
             </DataTrigger>
             <DataTrigger Binding="{Binding Path=Transaction.TransactionStatus}" Value='NOT_EXECUTED'>
-                <Setter Property="Background" Value="LightGray"/>
+                <Setter Property="Background" Value="LightBlue"/>
             </DataTrigger>
         </Style.Triggers>
     </Style>

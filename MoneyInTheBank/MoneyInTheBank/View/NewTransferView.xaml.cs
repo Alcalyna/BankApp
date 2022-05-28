@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using MoneyInTheBank.Model;
+﻿using MoneyInTheBank.Model;
 using PRBD_Framework;
-using System.Windows;
+using System;
 
 namespace MoneyInTheBank.View
 {

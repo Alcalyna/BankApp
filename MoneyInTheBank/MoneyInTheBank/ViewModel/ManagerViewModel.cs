@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MoneyInTheBank.Model;
+using PRBD_Framework;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using PRBD_Framework;
-using MoneyInTheBank.Model;
-using System.Windows;
 
 namespace MoneyInTheBank.ViewModel
 {
@@ -61,10 +55,17 @@ namespace MoneyInTheBank.ViewModel
                 Agencies = new ObservableCollection<Agency>(Manager.GetAllAgencies());
                 Register<Client>(App.Messages.CLIENT_UPDATED, client => { DisplayClients(); SelectedClient = null; });
                 NewClientCommand = new RelayCommand(CreateNewCommand, CanCreateNewClient);
-                Register(App.Messages.ADD_ACCOUNT_TO_USER, () => { SelectedClient = null; DisplayClientProfile(); });
-                Register(App.Messages.REMOVE_ACCOUNT_FROM_USER, () => { SelectedClient = null; DisplayClientProfile(); });
+                Register(App.Messages.ADD_ACCOUNT_TO_USER, InitializeClient);
+                Register(App.Messages.REMOVE_ACCOUNT_FROM_USER, InitializeClient);
             }
         }
+
+        private void InitializeClient()
+        {
+            SelectedClient = null; 
+            DisplayClientProfile();
+        }
+
         private bool CanCreateNewClient()
         {
             return SelectedAgency != null;

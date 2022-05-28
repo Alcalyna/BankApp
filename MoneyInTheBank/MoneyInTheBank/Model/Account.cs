@@ -1,11 +1,7 @@
-﻿using System;
+﻿using PRBD_Framework;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
-using PRBD_Framework;
-using System.ComponentModel;
+using System.Linq;
 
 namespace MoneyInTheBank.Model
 {
@@ -23,6 +19,12 @@ namespace MoneyInTheBank.Model
         public static Account GetByIban(string iban)
         {
             return Context.Accounts.SingleOrDefault(a => a.Iban.ToUpper().Replace(" ", "") == iban.ToUpper().Replace(" ", ""));
+        }
+
+        public void Add()
+        {
+            Context.Accounts.Add(this);
+            Context.SaveChanges();
         }
 
         public void Delete()

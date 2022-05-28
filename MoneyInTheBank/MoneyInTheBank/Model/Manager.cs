@@ -10,9 +10,6 @@ namespace MoneyInTheBank.Model
     {
         public virtual ICollection<Agency> Agencies { get; set; } = new HashSet<Agency>();
 
-        public List<Agency> GetAllAgencies()
-        {
-            return Agencies.ToList();
-        }
+        public List<Agency> GetAllAgencies() => Agencies.ToList();
     }
 }

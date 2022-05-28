@@ -12,55 +12,7 @@
     <UserControl.DataContext>
         <vm:AdminViewModel x:Name="vm"/>
     </UserControl.DataContext>
-    <Grid>
-        <!--<Grid.RowDefinitions>
-            <RowDefinition Height="7*"/>
-            <RowDefinition Height="7*"/>
-            <RowDefinition Height="7*"/>
-            <RowDefinition Height="7*"/>
-            <RowDefinition Height="7*"/>
-            <RowDefinition Height="7*"/>
-            <RowDefinition Height="56*"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*"/>
-            <ColumnDefinition Width="21*"/>
-            <ColumnDefinition Width="100*"/>
-            <ColumnDefinition Width="76*"/>
-        </Grid.ColumnDefinitions>
-        <Label x:Name="sourceAccountLabel" Grid.Column="1" Content="From" HorizontalAlignment="Left" VerticalAlignment="Center" Height="26" Width="37"/>
-        <Label x:Name="recipientAccountLabel" Grid.Column="1" Content="To" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="1" Height="26" Width="22"/>
-        <Label Grid.Column="1" Content="Amount" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2" Height="26" Width="53"/>
-        <Label Grid.Column="1" Content="Description" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="3" Height="25" Width="70"/>
-        <Label Grid.Column="1" Content="Action Date" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="4" Height="26" Width="72"/>
-        <Label Grid.Column="1" Content="Category" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="5" Height="26" Width="58"/>
-
-        <ComboBox x:Name="allInternalAccounts"  Grid.Column="2" ItemsSource="{Binding AllInternalAccounts}" SelectedItem="{Binding CurrentInternalAccount}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.ColumnSpan="2" Width="400" >
-            <ComboBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Iban}"></TextBlock>
-                </DataTemplate>
-            </ComboBox.ItemTemplate>
-        </ComboBox>
-
-
-        <TextBox x:Name="recipientAccountIban" GotFocus="txtIban_GotFocus" Text="{Binding Path=RecipientIban, UpdateSourceTrigger=PropertyChanged}"  Grid.Column="2" VerticalAlignment="Center" Grid.Row="1" Height="22" Margin="0,0,136,0"/>
-        <Button Grid.Column="2" Content="..." Command="{Binding SelectRecipient}" HorizontalAlignment="Left" Margin="358,0,0,0" Grid.Row="1" VerticalAlignment="Center"  Height="22" Width="40"/>
-        <TextBox x:Name="amountInput" Grid.Column="2" GotFocus="txtAmount_GotFocus" LostFocus="amount_format" HorizontalAlignment="Left" Grid.Row="2" TextWrapping="Wrap" Text="{Binding Amount, StringFormat={}{0:N2} €}" VerticalAlignment="Center" Width="400" Height="25"/>
-        <TextBox x:Name="descriptionInput" Grid.Column="2" GotFocus="txtDescription_GotFocus" HorizontalAlignment="Left" Grid.Row="3" TextWrapping="Wrap" Text="{Binding Description}" VerticalAlignment="Center" Width="400" Height="25"/>
-
-        <DatePicker x:Name="actionDate" Height="30" SelectedDate="{Binding ActionDateTime, UpdateSourceTrigger=PropertyChanged}" Grid.Column="2" HorizontalAlignment="Left" Grid.Row="4" Grid.RowSpan="2" Width="398" VerticalAlignment="Top" Margin="0,15,0,0"></DatePicker>
-        <ComboBox x:Name="category" IsEditable="True" IsTextSearchEnabled="True" ItemsSource="{Binding CategoryNames}" Text="{Binding CategoryName, Mode=TwoWay}" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="400" Grid.Row="5" Height="22">
-            <ComboBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding}"></TextBlock>
-                </DataTemplate>
-            </ComboBox.ItemTemplate>
-        </ComboBox>
-
-        <Button Grid.Column="2" Content="Transfer" Command="{Binding TransferCommand}" HorizontalAlignment="Left" Margin="41,51,0,0" Grid.Row="6" VerticalAlignment="Top" Width="118"/>
-        <Button Grid.Column="2" Content="Cancel" Command="{Binding CancelCommand}" HorizontalAlignment="Left" Margin="186,51,0,0" Grid.Row="6" VerticalAlignment="Top" Width="118"/>-->
-
-        
+    <Grid >
+        <Button Content="Create a new transaction from an external account" Command="{Binding CreateTransactionAdminCommand}" Margin="232,138,232,138" BorderBrush="AliceBlue"/>
     </Grid>
 </f:UserControlBase>

@@ -1,30 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using PRBD_Framework;
-using MoneyInTheBank.Model;
-using System;
-using System.ComponentModel;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
+﻿using MoneyInTheBank.Model;
 using PRBD_Framework;
 using System;
 using System.ComponentModel;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
 
 namespace MoneyInTheBank.View
 {
@@ -34,17 +11,15 @@ namespace MoneyInTheBank.View
         {
             InitializeComponent();
 
-            Register<InternalAccount>(App.Messages.DISPLAY_INTERNAL_ACCOUNT,
-                internalAccount => DoDisplayInternalAccount(internalAccount));
-
+            Register<InternalAccount>(App.Messages.DISPLAY_INTERNAL_ACCOUNT, internalAccount => DoDisplayInternalAccount(internalAccount));
             Register<InternalAccount>(App.Messages.NEW_TRANSFER, internalAccount => DoDisplayNewTransfer(internalAccount));
-            Register<InternalAccount>(App.Messages.CLOSE_TRANSACTION, account => DoCloseNewTransfer(account));
             Register<InternalAccount>(App.Messages.ACCOUNT_DELETED, account => DoCloseAccountDetail(account));
+            Register(App.Messages.OPEN_NEW_TRANSACTION_ADMIN_TAB, () => DoDisplayNewTransferAdmin());
+            Register(App.Messages.CLOSE_TRANSACTION, () => DoClose("New Transfer"));
+            Register(App.Messages.CLOSE_NEW_TRANSACTION_ADMIN, () => DoClose("New Transfer admin"));
         }
-
-        private void DoCloseNewTransfer(InternalAccount internalAccount)
+        private void DoClose(string tag)
         {
-            string tag = "New Transfer";
             var tab = tabControl.FindByTag(tag);
             if (tab != null)
                 tabControl.Items.Remove(tab);
@@ -78,9 +53,16 @@ namespace MoneyInTheBank.View
             else
                 tabControl.SetFocus(tab);
         }
-        private void MenuLogout_Click(object sender, System.Windows.RoutedEventArgs e)
+
+        private void DoDisplayNewTransferAdmin()
         {
-            NotifyColleagues(App.Messages.MSG_LOGOUT);
+            OpenTab("New Transfer admin", "New Transfer admin", () => new AdminTransactionView());
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            base.OnClosing(e);
+            tabControl.Dispose();
         }
     }
 }

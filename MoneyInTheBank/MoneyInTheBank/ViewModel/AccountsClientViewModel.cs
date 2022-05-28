@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections.ObjectModel;
-using System.Windows.Input;
+﻿using MoneyInTheBank.Model;
 using PRBD_Framework;
-using MoneyInTheBank.Model;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Input;
 using static MoneyInTheBank.Model.ClientInternalAccount;
-using System.Text.RegularExpressions;
 
 namespace MoneyInTheBank.ViewModel
 {
@@ -33,7 +30,7 @@ namespace MoneyInTheBank.ViewModel
         public DateTime CurrentDateTime
         {
             get => _currentDateTime;
-            set => SetProperty(ref _currentDateTime, value, () => { UpdateBalance(); });
+            set => SetProperty(ref _currentDateTime, value, SetAccounts);
         }
         public AccountsClientViewModel()
         {
@@ -126,8 +123,7 @@ namespace MoneyInTheBank.ViewModel
         private void UpdateBalance()
         {
             IQueryable<Transaction> transactions = Transaction.GetAll();
-            foreach (var Account in InternalAccounts)
-                Transaction.SetProperties(transactions, CurrentDateTime, Account);
+            Transaction.ComputeBalance(transactions, CurrentDateTime);
         }
         private void SetAccounts()
         {

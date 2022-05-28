@@ -68,7 +68,7 @@
 
 
             <TextBlock Grid.Column="1" Grid.Row="6" TextWrapping="WrapWithOverflow" TextTrimming="WordEllipsis"  Text="{Binding Path=Transaction.Description}" FontWeight="Bold" FontSize="10" Foreground="Black" TextAlignment="Left" VerticalAlignment="Center" Padding="5" Height="24" Grid.ColumnSpan="2" Margin="0,0,196,0"/>
-            <ComboBox x:Name="transactionCategory"  Grid.Column="1" Grid.Row="7" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="155" Grid.ColumnSpan="2" Height="22">
+            <ComboBox x:Name="transactionCategory"  Grid.Column="1" Grid.Row="7"  ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="155" Grid.ColumnSpan="2" Height="22">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Name}"></TextBlock>
@@ -76,8 +76,8 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
 
-            <TextBlock Grid.Column="3" Grid.Row="1" TextWrapping="WrapWithOverflow" TextTrimming="WordEllipsis" Text="{Binding Path=Transaction.AmountToDisplay, Converter={vw:CurrencyToStringWithPlusSignConverter}}" Style="{StaticResource BalanceStyle}" FontSize="10" TextAlignment="Left" VerticalAlignment="Center" Padding="5" Height="20" Margin="29,0,22,0"/>
-            <TextBlock Grid.Column="3" Grid.Row="2" TextWrapping="WrapWithOverflow" TextTrimming="WordEllipsis" Text="{Binding Path=Transaction.TemporaryBalance, Converter={vw:CurrencyToStringWithPlusSignConverter}}" Style="{StaticResource BalanceStyle}" Visibility="{Binding Path=Transaction.TransactionStatus, ConverterParameter={x:Static vm:Status.NOT_EXECUTED}, Converter={vw:EnumToNotVisibleConverter}}" FontSize="10" TextAlignment="Left" VerticalAlignment="Center" Padding="5" Height="20" Margin="29,0,22,0"/>
+            <TextBlock Grid.Column="3" Grid.Row="1" TextWrapping="WrapWithOverflow" TextTrimming="WordEllipsis" Text="{Binding AmountToDisplay, Converter={vw:CurrencyToStringWithPlusSignConverter}}" Style="{StaticResource BalanceStyle}" FontSize="10" TextAlignment="Left" VerticalAlignment="Center" Padding="5" Height="20" Margin="29,0,22,0"/>
+            <TextBlock Grid.Column="3" Grid.Row="2" TextWrapping="WrapWithOverflow" TextTrimming="WordEllipsis" Text="{Binding TemporaryBalance, Converter={vw:CurrencyToStringWithPlusSignConverter}}" Style="{StaticResource BalanceStyle}" Visibility="{Binding Path=Transaction.TransactionStatus, ConverterParameter={x:Static vm:Status.NOT_EXECUTED}, Converter={vw:EnumToNotVisibleConverter}}" FontSize="10" TextAlignment="Left" VerticalAlignment="Center" Padding="5" Height="20" Margin="29,0,22,0"/>
             <Label Grid.Column="2" Grid.Row="1" Content="Amount" HorizontalAlignment="Left" Margin="0,6,0,0" VerticalAlignment="Top" Height="26" Width="54"/>
             <Label Grid.Column="2" Grid.Row="2" Content="Temporary balance" Visibility="{Binding Path=Transaction.TransactionStatus, ConverterParameter={x:Static vm:Status.NOT_EXECUTED}, Converter={vw:EnumToNotVisibleConverter}}" HorizontalAlignment="Left" Margin="0,6,0,0" VerticalAlignment="Top" Height="26" Width="114"/>
 

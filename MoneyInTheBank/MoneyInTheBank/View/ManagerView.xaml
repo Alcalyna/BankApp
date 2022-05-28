@@ -29,7 +29,7 @@
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
-        <f:MyDataGrid Grid.Row="1" x:Name="clientsAgencyData" ItemsSource="{Binding Clients}" AutoGenerateColumns="False" ScrollViewer.VerticalScrollBarVisibility="Auto" SelectedItem="{Binding SelectedClient}">
+        <f:MyDataGrid Grid.Row="1" x:Name="clientsAgencyData" IsReadOnly="True" ItemsSource="{Binding Clients}" AutoGenerateColumns="False" ScrollViewer.VerticalScrollBarVisibility="Auto" SelectedItem="{Binding SelectedClient}">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseClick">
                     <i:InvokeCommandAction Command="{Binding ClientSelectedCommand}" CommandParameter="{Binding}"/>

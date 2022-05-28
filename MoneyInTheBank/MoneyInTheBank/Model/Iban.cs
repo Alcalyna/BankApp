@@ -4,7 +4,6 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace MoneyInTheBank.Model
 {
@@ -24,6 +23,14 @@ namespace MoneyInTheBank.Model
             if (Validate(iban) != ValidationResult.IsValid)
                 throw new Exception(res.ToString());
             return new IBAN(iban);
+        }
+
+        public static bool IsValidIban(string iban)
+        {
+            var res = Validate(iban);
+            if (Validate(iban) != ValidationResult.IsValid)
+                return false;
+            return true;
         }
 
         public override string ToString()

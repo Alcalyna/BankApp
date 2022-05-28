@@ -15,13 +15,7 @@ namespace MoneyInTheBank
 
         public enum Messages
         {
-            MSG_NEW_MEMBER,
-            MSG_PSEUDO_CHANGED,
-            MSG_MEMBER_CHANGED,
-            MSG_DISPLAY_MEMBER,
-            MSG_CLOSE_TAB,
             MSG_LOGIN,
-            MSG_REFRESH_MESSAGES,
             MSG_LOGOUT,
             DATE_CHANGED,
             INTERNAL_ACCOUNT_DETAIL,
@@ -41,7 +35,10 @@ namespace MoneyInTheBank
             AGENCY_SELECTED,
             ADD_ACCOUNT_TO_USER,
             REMOVE_ACCOUNT_FROM_USER,
-            ACCOUNT_DELETED
+            ACCOUNT_DELETED,
+            OPEN_NEW_TRANSACTION_ADMIN_TAB,
+            CLOSE_NEW_TRANSACTION_ADMIN,
+            CATEGORY_CHECKED_CHANGED
         }
         private void SetCulture()
         {
@@ -62,16 +59,11 @@ namespace MoneyInTheBank
 
         protected override void OnStartup(StartupEventArgs e)
         {
-
             base.OnStartup(e);
-
             SetCulture();
-
             Context.Database.EnsureDeleted();
             Context.Database.EnsureCreated();
-            
             Context.SeedData();
-
             Register<User>(this, Messages.MSG_LOGIN, user => {
                 Login(user);
                 NavigateTo<MainViewModel, User, MoneyInTheBankContext>();

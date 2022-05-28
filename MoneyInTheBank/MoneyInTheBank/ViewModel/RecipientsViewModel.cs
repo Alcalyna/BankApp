@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MoneyInTheBank.Model;
 using PRBD_Framework;
-using MoneyInTheBank.Model;
-using System.Text.RegularExpressions;
-using System.Windows.Input;
-using MoneyInTheBank.View;
+using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
-using PRBD_Framework;
-using MoneyInTheBank.Model;
 
 namespace MoneyInTheBank.ViewModel
 {

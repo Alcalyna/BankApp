@@ -18,7 +18,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="53*"/>
         </Grid.RowDefinitions>
-        <f:MyDataGrid Grid.Row="0" x:Name="clientsInternalAccounts" ItemsSource="{Binding InternalAccounts}" SelectedItem="{Binding SelectedAccountToUpdate}" AutoGenerateColumns="False" ScrollViewer.VerticalScrollBarVisibility="Auto">
+        <f:MyDataGrid Grid.Row="0" x:Name="clientsInternalAccounts" ItemsSource="{Binding InternalAccounts}"  IsReadOnly="True" SelectedItem="{Binding SelectedAccountToUpdate}" AutoGenerateColumns="False" ScrollViewer.VerticalScrollBarVisibility="Auto">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="IBAN" Binding="{Binding Path=Iban}" SortDirection="Descending"/>
                 <DataGridTextColumn Header="Type" Binding="{Binding Path=Relation}" />

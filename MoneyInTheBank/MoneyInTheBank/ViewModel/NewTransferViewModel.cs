@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections.ObjectModel;
-using System.Windows.Input;
+﻿using MoneyInTheBank.Model;
 using PRBD_Framework;
-using MoneyInTheBank.Model;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Input;
 
 
 namespace MoneyInTheBank.ViewModel
@@ -90,7 +88,7 @@ namespace MoneyInTheBank.ViewModel
         public DateTime CurrentDateTime
         {
             get => _currentDateTime;
-            set => SetProperty(ref _currentDateTime, value);
+            set => SetProperty(ref _currentDateTime, value, () => { Transaction.ComputeBalance(Transaction.GetAll(), value); Validate(); } );
         }
 
         public NewTransferViewModel()
@@ -108,8 +106,7 @@ namespace MoneyInTheBank.ViewModel
         public override void CancelAction()
         {
             ClearErrors();
-            NotifyColleagues(App.Messages.CLOSE_TRANSACTION, CurrentInternalAccount);
-            RaisePropertyChanged();
+            NotifyColleagues(App.Messages.CLOSE_TRANSACTION);
         }
 
         private bool CanCancelAction()
@@ -138,7 +135,8 @@ namespace MoneyInTheBank.ViewModel
                 transaction.Add();
                 ClearErrors();
                 NotifyColleagues(App.Messages.TRANSACTION_CREATED);
-                NotifyColleagues(App.Messages.CLOSE_TRANSACTION, CurrentInternalAccount);
+                ClearErrors();
+                NotifyColleagues(App.Messages.CLOSE_TRANSACTION);
             }
         }
         public void Init(InternalAccount currentInternalAccount)
@@ -170,7 +168,7 @@ namespace MoneyInTheBank.ViewModel
                 AddError(nameof(RecipientIban), "required");
             else
             {
-                var recipient = Context.Accounts.SingleOrDefault(a => a.Iban.ToUpper().Replace(" ", "") == RecipientIban.ToUpper().Replace(" ", ""));
+                var recipient = Account.GetByIban(RecipientIban);
                 if (recipient == null)
                     AddError(nameof(RecipientIban), "This account does not exist!");
                 else if(CurrentInternalAccount is CheckingAccount)

@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections.ObjectModel;
-using System.Windows.Input;
+﻿using MoneyInTheBank.Model;
 using PRBD_Framework;
-using MoneyInTheBank.Model;
-using System.Windows;
+using System;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Input;
 
 namespace MoneyInTheBank.ViewModel
 {
@@ -18,7 +14,7 @@ namespace MoneyInTheBank.ViewModel
         public ObservableCollection<InternalAccount> InternalAccounts
         {
             get => _internalAccounts;
-            set => SetProperty(ref _internalAccounts, value, () => { SetProperties(); UpdateBalance(); });
+            set => SetProperty(ref _internalAccounts, value, UpdateAccounts);
         }
 
         private string _filter;
@@ -49,6 +45,11 @@ namespace MoneyInTheBank.ViewModel
             set => SetProperty(ref _allSelected, value, OnRefreshData);
         }
 
+        private void UpdateAccounts()
+        {
+            SetProperties(); 
+            UpdateBalance(); 
+        }
 
         private Client _currentClient;
         public Client CurrentClient
@@ -61,7 +62,7 @@ namespace MoneyInTheBank.ViewModel
         public DateTime CurrentDateTime
         {
             get => _currentDateTime;
-            set => SetProperty(ref _currentDateTime, value, () => { UpdateBalance(); });
+            set => SetProperty(ref _currentDateTime, value, OnRefreshData);
         }
 
         public ICommand Statement { get; set; }
@@ -76,27 +77,18 @@ namespace MoneyInTheBank.ViewModel
             {
                 AllSelected = true;
                 CurrentDateTime = CurrentDate;
-
             }
             ClearFilter = new RelayCommand(() => Filter = "");
-
-            Statement = new RelayCommand<InternalAccount>(internalAccount => {
-                NotifyColleagues(App.Messages.DISPLAY_INTERNAL_ACCOUNT, internalAccount);
-            });
-            NewTransfer = new RelayCommand<InternalAccount>(internalAccount => {
-                NotifyColleagues(App.Messages.NEW_TRANSFER, internalAccount);
-            });
-
+            Statement = new RelayCommand<InternalAccount>(internalAccount => { NotifyColleagues(App.Messages.DISPLAY_INTERNAL_ACCOUNT, internalAccount); });
+            NewTransfer = new RelayCommand<InternalAccount>(internalAccount => { NotifyColleagues(App.Messages.NEW_TRANSFER, internalAccount); });
             Register<DateTime>(App.Messages.DATE_CHANGED, date => { CurrentDateTime = date; });
-
-            Register(App.Messages.TRANSACTION_CREATED, () => { UpdateBalance(); });
+            Register(App.Messages.TRANSACTION_CREATED, () => { OnRefreshData(); });
         }
 
         private void UpdateBalance()
         {
             IQueryable<Transaction> transactions = Transaction.GetAll();
-            foreach (var Account in InternalAccounts)
-                Transaction.SetProperties(transactions, CurrentDateTime, null);
+            Transaction.ComputeBalance(transactions, CurrentDateTime);
         }
  
         private void SetProperties()

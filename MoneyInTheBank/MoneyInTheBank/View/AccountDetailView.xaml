@@ -71,21 +71,7 @@
                         </ListBox.ItemsPanel>
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <CheckBox
-                                    Content="{Binding NameToDisplay}"
-                                            Margin="3"
-                                          IsChecked="{Binding IsChecked}">
-                                    <i:Interaction.Triggers>
-                                        <i:EventTrigger EventName="Checked">
-                                            <i:InvokeCommandAction Command="{Binding CheckCommand, ElementName=vm}"
-                                                   CommandParameter="{Binding}"/>
-                                        </i:EventTrigger>
-                                        <i:EventTrigger EventName="Unchecked">
-                                            <i:InvokeCommandAction Command="{Binding UncheckCommand, ElementName=vm}"
-                                                   CommandParameter="{Binding}"/>
-                                        </i:EventTrigger>
-                                    </i:Interaction.Triggers>
-                                </CheckBox>
+                                <CheckBox Content="{Binding NameToDisplay}" Margin="3" IsChecked="{Binding IsChecked}"/>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>

@@ -104,3 +104,5 @@ C:\Users\lnguyea\Desktop\test\prbd-2122-g21\MoneyInTheBank\MoneyInTheBank\obj\De
 C:\Users\lnguyea\Desktop\test\prbd-2122-g21\MoneyInTheBank\MoneyInTheBank\obj\Debug\net5.0-windows\ref\MoneyInTheBank.dll
 C:\Users\lnguyea\Desktop\test\prbd-2122-g21\MoneyInTheBank\MoneyInTheBank\obj\Debug\net5.0-windows\View\AdminView.g.cs
 C:\Users\lnguyea\Desktop\test\prbd-2122-g21\MoneyInTheBank\MoneyInTheBank\obj\Debug\net5.0-windows\View\AdminView.baml
+C:\Users\lnguyea\Desktop\test\prbd-2122-g21\MoneyInTheBank\MoneyInTheBank\obj\Debug\net5.0-windows\View\AdminTransactionView.g.cs
+C:\Users\lnguyea\Desktop\test\prbd-2122-g21\MoneyInTheBank\MoneyInTheBank\obj\Debug\net5.0-windows\View\AdminTransactionView.baml

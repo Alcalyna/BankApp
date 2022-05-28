@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET5_0;NETCOREAPP
 C:\Users\lnguyea\Desktop\test\prbd-2122-g21\MoneyInTheBank\MoneyInTheBank\App.xaml
-13773485529
+14946083050
 
-49-1709080442
+51-503841463
 236244454588
-Styles.xaml;View\AccountCardView.xaml;View\AccountDetailView.xaml;View\AccountsClientView.xaml;View\AccountView.xaml;View\AdminView.xaml;View\ClientView.xaml;View\LoginView.xaml;View\MainView.xaml;View\ManagerView.xaml;View\NewTransferView.xaml;View\RecipientsView.xaml;View\TransactionCardView.xaml;
+Styles.xaml;View\AccountCardView.xaml;View\AccountDetailView.xaml;View\AccountsClientView.xaml;View\AccountView.xaml;View\AdminTransactionView.xaml;View\AdminView.xaml;View\ClientView.xaml;View\LoginView.xaml;View\MainView.xaml;View\ManagerView.xaml;View\NewTransferView.xaml;View\RecipientsView.xaml;View\TransactionCardView.xaml;
 
 False
 

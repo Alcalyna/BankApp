@@ -1,43 +1,29 @@
-﻿using System;
-using System.Runtime;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections.ObjectModel;
-using System.Windows.Input;
+﻿using MoneyInTheBank.Model;
 using PRBD_Framework;
-using MoneyInTheBank.Model;
-using static MoneyInTheBank.Model.ClientInternalAccount;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
+using System.Windows.Input;
 
 namespace MoneyInTheBank.ViewModel
 {
-    public class CategoryBoolean: INotifyPropertyChanged
+    public class CategoryBoolean : ViewModelCommon
     {
         public string CategoryName { get; set; }
         public Category Category { get; set; }
         public string NameToDisplay { get; set; }
-        private bool _isChecked = false;
+        private bool _isChecked;
         public bool IsChecked
         {
             get => _isChecked;
-            set
-            {
-                if (_isChecked != value)
-                {
-                    _isChecked = value;
-                    OnPropertyChanged("IsChecked");
-                }
-            }
+            set => SetProperty(ref _isChecked, value, NotifyCheckedUnchecked);
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        private void OnPropertyChanged(string IsChecked)
+        private void NotifyCheckedUnchecked()
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(IsChecked));
+            NotifyColleagues(App.Messages.CATEGORY_CHECKED_CHANGED, this);
         }
 
         public CategoryBoolean(Category category)
@@ -45,7 +31,6 @@ namespace MoneyInTheBank.ViewModel
             this.Category = category;
             this.NameToDisplay = category.Name;
         }
-
         public CategoryBoolean(Category category, string NameToDisplay)
         {
             this.CategoryName = CategoryName;
@@ -70,7 +55,7 @@ namespace MoneyInTheBank.ViewModel
         public DateTime CurrentDateTime
         {
             get => _currentDateTime;
-            set => SetProperty(ref _currentDateTime, value, () => { OnRefreshData(); });
+            set => SetProperty(ref _currentDateTime, value, OnRefreshData);
         }
 
         private ObservableCollection<Transaction> _transactions = new();
@@ -110,8 +95,6 @@ namespace MoneyInTheBank.ViewModel
         public ICommand ClearFilter { get; set; }
         public ICommand SelectAllCommand { get; set; }
         public ICommand SelectNoneCommand { get; set; }
-        public ICommand CheckCommand { get; set; }
-        public ICommand UncheckCommand { get; set; }
         public ObservableCollection<Category> SelectedCategories { get; set; } = new();
 
         private ObservableCollection<Category> _selectedCategory = new();
@@ -126,14 +109,14 @@ namespace MoneyInTheBank.ViewModel
         public AccountDetailViewModel() : base()
         {
             Register<DateTime>(App.Messages.DATE_CHANGED, date => { CurrentDateTime = date; });
-            SelectAllCommand = new RelayCommand(() => SelectAllCategories());
-            SelectNoneCommand = new RelayCommand(() => SelectNoCategory());
-            CheckCommand = new RelayCommand<CategoryBoolean>(categoryBoolean => AddCategory(categoryBoolean));
-            UncheckCommand = new RelayCommand<CategoryBoolean>(categoryBoolean => RemoveCategory(categoryBoolean));
+            Register<CategoryBoolean>(App.Messages.CATEGORY_CHECKED_CHANGED, categoryBoolean => UpdateCategory(categoryBoolean));
             Register<Transaction>(App.Messages.CATEGORY_CHANGED, transaction => { OnRefreshData(); });
             Register(App.Messages.TRANSACTION_CANCELED, OnRefreshData);
+            Register(App.Messages.TRANSACTION_CREATED, OnRefreshData);
+            
+            SelectAllCommand = new RelayCommand(() => SelectAllCategories());
+            SelectNoneCommand = new RelayCommand(() => SelectNoCategory());
             ClearFilter = new RelayCommand(() => Filter = "");
-
             FirstPageCommand = new RelayCommand(FirstPageAction, CanFirstPageAction);
             PreviousPageCommand = new RelayCommand(PreviousPageAction, CanPreviousPageAction);
             NextPageCommand = new RelayCommand(NextPageAction, CanNextPageAction);
@@ -156,52 +139,45 @@ namespace MoneyInTheBank.ViewModel
             OnRefreshData();
         }
 
-        private bool CanFirstPageAction()
-        {
-            return CurrentPage > 1;
-        }
-
+        private bool CanFirstPageAction() => CurrentPage > 1;
         private void PreviousPageAction()
         {
             --CurrentPage;
             OnRefreshData();
         }
 
-        private bool CanPreviousPageAction()
-        {
-            return CurrentPage > 1;
-        }
+        private bool CanPreviousPageAction() => CurrentPage > 1;
         private void NextPageAction()
         {
             ++CurrentPage;
             OnRefreshData();
         }
 
-        private bool CanNextPageAction()
-        {
-            return CurrentPage < NumberOfPages;
-        }
+        private bool CanNextPageAction() => CurrentPage < NumberOfPages;
         private void LastPageAction()
         {
             CurrentPage = NumberOfPages;
             OnRefreshData();
         }
 
-        private bool CanLastPageAction()
-        {
-            return CurrentPage != NumberOfPages;
-        }
+        private bool CanLastPageAction() => CurrentPage != NumberOfPages;
 
+        private void UpdateCategory(CategoryBoolean categoryBoolean)
+        {
+            if(categoryBoolean.IsChecked)
+                AddCategory(categoryBoolean);
+            else
+                RemoveCategory(categoryBoolean);
+            OnRefreshData();
+        }
         private void AddCategory(CategoryBoolean categoryBoolean)
         {
             SelectedCategory.Add(categoryBoolean.Category);
-            OnRefreshData();
         }
 
         private void RemoveCategory(CategoryBoolean categoryBoolean)
         {
             SelectedCategory.Remove(categoryBoolean.Category);
-            OnRefreshData();
         }
 
         private void SelectAllCategories()
@@ -250,8 +226,6 @@ namespace MoneyInTheBank.ViewModel
         private Boolean OneMonth { get; set; }
         private Boolean OneYear { get; set; }
         private Boolean AllPeriod { get; set; }
-
-
         private void UpdatePeriod()
         {
             OneDay = false;
@@ -283,7 +257,6 @@ namespace MoneyInTheBank.ViewModel
             }
             OnRefreshData();
         }
-
 
         private bool _futureTransactions;
         public bool FutureTransactions
@@ -351,14 +324,13 @@ namespace MoneyInTheBank.ViewModel
         protected override void OnRefreshData()
         {
             IQueryable<Transaction> transactions = Transaction.GetAll();
-            Transaction.SetProperties(transactions, CurrentDateTime, InternalAccount);
+            Transaction.ComputeBalance(transactions, CurrentDateTime);
             var filteredTransactions = transactions.AsEnumerable()
                                       .Where(t => t.Source == InternalAccount || t.Recipient == InternalAccount)
                                       .Where(t => t.TransactionStatus != Status.NOT_DISPLAYED)
                                       .Where(t => PastTransactions && t.ActionDateTime <= CurrentDateTime || FutureTransactions && t.ActionDateTime > CurrentDateTime)
                                       .Where(t => (AllPeriod) || (OneDay && t.ActionDateTime >= CurrentDateTime) || (OneWeek && t.ActionDateTime >= CurrentDateTime.AddDays(-7)) || (TwoWeeks && t.ActionDateTime >= CurrentDateTime.AddDays(-14)) || (OneMonth && t.ActionDateTime >= CurrentDateTime.AddMonths(-1)) || (OneYear && t.ActionDateTime >= CurrentDateTime.AddYears(-1)))
-
-                                      .Where(t => string.IsNullOrEmpty(Filter) || !string.IsNullOrEmpty(Filter) && (t.Source.Iban.ToUpper().Contains(Filter.ToUpper()) || t.Recipient.Iban.Contains(Filter) || t.Description.Contains(Filter) || t.Amount.ToString().Contains(Filter)))
+                                      .Where(t => string.IsNullOrEmpty(Filter) || !string.IsNullOrEmpty(Filter) && (t.Source.Iban.ToUpper().Contains(Filter.ToUpper()) || t.Recipient.Iban.Contains(Filter) || t.Description.Contains(Filter) || t.Amount.ToString().Contains(Filter) || t.Source.Description.ToUpper().Contains(Filter.ToUpper()) || t.Recipient.Description.Contains(Filter) || t.Principal.FirstName.ToUpper().Contains(Filter.ToUpper()) || t.Principal.LastName.ToUpper().Contains(Filter.ToUpper())))
                                       .Where(t => SelectedCategory.Contains(t.Category))
                                       .Where(t => RefusedTransactions || !RefusedTransactions && t.TransactionStatus != Status.REFUSED)
                                       .Where(t => t.Recipient != InternalAccount || t.TransactionStatus != Status.REFUSED)
@@ -367,50 +339,48 @@ namespace MoneyInTheBank.ViewModel
                                       .ThenByDescending(t => t.CreationDateTime)
                                       .ToList();
             TransactionsVMs.Clear();
-
             if (filteredTransactions.Count != 0)
             {
-                int numberOfElements = filteredTransactions.Count;
-                NumberOfPages = (int)Math.Ceiling(((double)numberOfElements / (double)PageSize));
-                if(CurrentPage > NumberOfPages || CurrentPage == 0)
-                    CurrentPage = 1;
-                var displayingTransactions = filteredTransactions.AsEnumerable()
-                                            .Skip((CurrentPage - 1) * PageSize)
-                                              .Take(PageSize)
-                                              .ToList();
-
-                StartDate = displayingTransactions[0].ActionDateTime;
-                EndDate = displayingTransactions[displayingTransactions.Count - 1].ActionDateTime;
-
-
-                foreach (Transaction transaction in displayingTransactions)
-                {
-                    TransactionCardViewModel transactionCardViewModel = new TransactionCardViewModel(transaction);
-                    transactionCardViewModel.Categories = this.Categories;
-                    Boolean containsNoCategory = false;
-                    foreach (var category in transactionCardViewModel.Categories)
-                    {
-                        if (category != null && category.Name == "<No Category>")
-                        {
-                            containsNoCategory = true;
-                        }
-                    }
-                    if (!containsNoCategory)
-                    {
-                        transactionCardViewModel.Categories.Add(new Category("<No Category>"));
-                    }
-                    TransactionsVMs.Add(transactionCardViewModel);
-                }
+                List<Transaction> displayingTransactions = GetTransactionsToDisplayPagination(filteredTransactions);
+                AddViewModelToList(displayingTransactions);
             }
             else
-            {
-                NumberOfPages = 0;
-                CurrentPage = 0;
-                StartDate = null;
-                EndDate = null;
-            }
-                Transactions = new ObservableCollection<Transaction>(filteredTransactions);
+                ResetPaginationFeatures();
+            Transactions = new ObservableCollection<Transaction>(filteredTransactions);
 
+        }
+
+        private List<Transaction> GetTransactionsToDisplayPagination(List<Transaction> filteredTransactions)
+        {
+            int numberOfElements = filteredTransactions.Count;
+            NumberOfPages = (int)Math.Ceiling(((double)numberOfElements / (double)PageSize));
+            if (CurrentPage > NumberOfPages || CurrentPage == 0)
+                CurrentPage = 1;
+            var displayingTransactions = filteredTransactions.AsEnumerable().Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+            StartDate = displayingTransactions[0].ActionDateTime;
+            EndDate = displayingTransactions[displayingTransactions.Count - 1].ActionDateTime;
+            return displayingTransactions;
+        }
+
+        private void ResetPaginationFeatures()
+        {
+            NumberOfPages = 0;
+            CurrentPage = 0;
+            StartDate = null;
+            EndDate = null;
+        }
+
+        private void AddViewModelToList(List<Transaction> displayingTransactions)
+        {
+            foreach (Transaction transaction in displayingTransactions)
+            {
+                TransactionCardViewModel transactionCardViewModel = new TransactionCardViewModel(transaction, InternalAccount);
+                transactionCardViewModel.Categories = this.Categories;
+                bool containsNoCategory = transactionCardViewModel.Categories.Any(c => c.Name == "");
+                if (!containsNoCategory)
+                    transactionCardViewModel.Categories.Add(new Category(""));
+                TransactionsVMs.Add(transactionCardViewModel);
+            }
         }
 
         private int _currentPage;
@@ -443,7 +413,7 @@ namespace MoneyInTheBank.ViewModel
         public ICommand PreviousPageCommand { get; set; }
         public ICommand NextPageCommand { get; set; }
         public ICommand LastPageCommand { get; set; }
-        private int PageSize { get; set; } = 2;
+        private int PageSize { get; set; } = 4;
         
     }
 }
